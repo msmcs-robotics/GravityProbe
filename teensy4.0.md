@@ -2,15 +2,45 @@
 
 Use the i2c scanner to determine the addresses for the mpu and the oled display
 
+Use the mpu zero script relative to mpu name to calibrate
+
 ## MPU6050
 
-> MPU6050 mpu(0x68); // Define the address of the mpu
+* GND - GND
+* VCC - 5v
+* SCL - 19
+* SDA - 18
+
+```cpp
+MPU6050 mpu(0x68); // Define the i2c address of the mpu
+```
+
+Example Offsets after running the mpu6050_zero program (calibrate and find offsets)
+
+```
+Averaging 10000 readings each time
+		XAccel			YAccel				ZAccel			XGyro			YGyro			ZGyro
+ [-4347,-4345] --> [-13,8]	[-351,-350] --> [-2,16]	[2620,2622] --> [16369,16388]	[43,44] --> [-2,1]	[82,83] --> [-1,1]	[29,30] --> [0,3]
+ [-4347,-4346] --> [-13,5]	[-351,-350] --> [-2,16]	[2621,2622] --> [16375,16388]	[43,44] --> [-3,1]	[82,83] --> [0,1]	[29,30] --> [0,3]
+ [-4347,-4346] --> [-16,5]	[-351,-351] --> [-2,3]	[2621,2622] --> [16348,16388]	[43,44] --> [-4,1]	[82,83] --> [-1,1]	[29,30] --> [0,3]
+-------------- DONE --------------
+```
+
+Applying the offsets in the mpu code
+```
+const int accelXOffset = -4347;
+const int accelYOffset = -351;
+const int accelZOffset = 2620;
+const int gyroXOffset = 43;
+const int gyroYOffset = 82;
+const int gyroZOffset = 29;
+```
 
 ## HW125 SD card module
 
-> card.init() not SD.init()
+> card.init() not the function SD.init()
 
-### Teensy 4.0 pinout for HW 125
+**Pinout**
 
 *  CS - 10
 *  SCK - 13
@@ -19,15 +49,15 @@ Use the i2c scanner to determine the addresses for the mpu and the oled display
 *  VCC - 5v
 *  GND - GND
 
-### File Handling
+**File Handling**
 
 The file (dataFile) is opened once in the setup() function and remains open for the entire duration of the loop. This ensures that data can be written without closing the file prematurely.
 
-### Flushing and Writing 
+**Flushing and Writing** 
 
 After every write, the flush() function is called to ensure the data is actually written to the SD card. This reduces the chances of data being cached and not actually written to the SD card.
 
-### No Closing the File
+**No Closing the File**
 
 Don't close dataFile.close() within the loop(), ensuring the file stays open. The file will only be closed when the program ends, so it won't disrupt data logging.
 
@@ -43,10 +73,17 @@ https://github.com/Hieromon/ESP8266
 
 ## I2C OLED Display 0.91
 
-using wire for i2c communication and u8g2 for graphics.
+> using wire for i2c communication and u8g2 for graphics
 
-> #include <U8g2lib.h>
-> #include <Wire.h>
+* GND - GND
+* VCC - 3v
+* SCL - 19
+* SDA - 18
+
+```cpp
+#include <U8g2lib.h>
+#include <Wire.h>
+```
 
 the proper constructor for *dsd tech i2c oled 0.91* and using normal scl (19) and sda (18) pins for the teensy
 
