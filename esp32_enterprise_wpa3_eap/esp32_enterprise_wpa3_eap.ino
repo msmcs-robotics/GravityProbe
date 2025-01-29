@@ -1,11 +1,10 @@
 // Code from: Arduino IDE Examples>WiFi>WiFiClientEnterprise
 #include "wifi_credentials.h"
 #include <WiFi.h>                      //Wifi library
-#define EAP_IDENTITY WIFI_USER           //if connecting from another corporation, use identity@organization.domain in Eduroam
-#define EAP_USERNAME WIFI_USER           //oftentimes just a repeat of the identity
-#define EAP_PASSWORD WIFI_PASSWORD        //your Eduroam password
-const char *ssid = "UAA WiFi -MatSu";          // Eduroam SSID
-//const char *host = "arduino.php5.sk";  //external server domain for HTTP connection after authentication
+#define EAP_IDENTITY "username"           //if connecting from another corporation, use identity@organization.domain in Eduroam
+#define EAP_USERNAME "username"           // oftentimes just a repeat of the identity
+#define EAP_PASSWORD "password"        //your Eduroam password
+const char *ssid = "ERAUStudents";          // Eduroam SSID
 const char *host = "wifitest.adafruit.com";
 int counter = 0;
 
